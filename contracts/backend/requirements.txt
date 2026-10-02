@@ -1,0 +1,12 @@
+fastapi>=0.110
+uvicorn[standard]>=0.27
+web3>=6.15
+python-dotenv>=1.0
+python-multipart>=0.0.9
+
+# Optional document processing. Install what is available on this machine.
+PyMuPDF>=1.23
+pypdf>=4.0
+Pillow>=10.0
+pytesseract>=0.3.10
+opencv-python-headless>=4.9

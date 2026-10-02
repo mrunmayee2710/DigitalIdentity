@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#eff4ee">
+  <title>Credential Ledger | Academic Verification</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <a class="brand" href="#dashboard" data-page="dashboard" aria-label="Credential Ledger dashboard">
+        <span class="brand-mark">CL</span>
+        <span><strong>Credential Ledger</strong><small>ACADEMIC TRUST, TRACEABLE</small></span>
+      </a>
+      <p class="nav-caption">WORKSPACE</p>
+      <nav class="nav-menu" aria-label="Main navigation">
+        <a class="nav-link active" href="#dashboard" data-page="dashboard"><span class="nav-glyph">◫</span>Overview</a>
+        <a class="nav-link" href="#register" data-page="register"><span class="nav-glyph">＋</span>Candidate registration</a>
+        <a class="nav-link" href="#documents" data-page="documents"><span class="nav-glyph">▤</span>Documents & verify</a>
+        <a class="nav-link" href="#results" data-page="results"><span class="nav-glyph">✓</span>Verification result</a>
+        <a class="nav-link" href="#history" data-page="history"><span class="nav-glyph">↺</span>Verification history</a>
+        <a class="nav-link" href="#recruiter" data-page="recruiter"><span class="nav-glyph">⌕</span>Recruiter desk</a>
+        <a class="nav-link" href="#details" data-page="details"><span class="nav-glyph">◎</span>Candidate details</a>
+      </nav>
+      <div class="network-box">
+        <div class="network-line"><span class="status-dot" id="networkDot"></span><strong id="networkLabel">Checking network</strong></div>
+        <p id="networkMessage">Reading configured Ganache and contract status.</p>
+        <dl><div><dt>CHAIN</dt><dd id="sideChain">--</dd></div><div><dt>BLOCK</dt><dd id="sideBlock">--</dd></div></dl>
+      </div>
+      <div class="sidebar-foot">LOCAL DEMO · <span id="footerYear"></span></div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div><p class="eyebrow" id="pageEyebrow">ACADEMIC CREDENTIALS</p><h1 id="pageTitle">Overview</h1></div>
+        <div class="top-actions"><label class="quick-search"><span>⌕</span><input id="quickSearch" type="search" placeholder="Find a candidate" aria-label="Find a candidate"></label><span class="role-tag">RECRUITER WORKSPACE</span></div>
+      </header>
+      <div id="toastRegion" class="toast-region" aria-live="polite"></div>
+
+      <section class="page active" id="dashboard-page">
+        <div class="welcome-row"><div><p class="eyebrow">SYSTEM SNAPSHOT</p><h2>Academic records, with a verifiable trail.</h2><p class="lede">A local demonstration of credential checks across document signals, identity fields, eligibility rules and a configured blockchain.</p></div><button class="button button-dark" data-go="register">＋ Add candidate</button></div>
+        <div class="metric-grid">
+          <article class="metric"><span>Registered candidates</span><strong id="metricCandidates">0</strong><small>Stored in the local registry</small></article>
+          <article class="metric"><span>Verified</span><strong id="metricVerified">0</strong><small>Passed all required checks</small></article>
+          <article class="metric"><span>Needs review</span><strong id="metricReview">0</strong><small>Incomplete or unavailable signals</small></article>
+          <article class="metric metric-accent"><span>Eligible</span><strong id="metricEligible">0</strong><small>Passed the current rule set</small></article>
+        </div>
+        <div class="section-heading"><div><p class="eyebrow">NETWORK</p><h3>Blockchain connection</h3></div><span class="status-pill" id="contractState">Checking</span></div>
+        <div class="chain-panel"><div><span class="chain-label">RPC ENDPOINT</span><strong id="rpcValue">--</strong></div><div><span class="chain-label">CHAIN ID</span><strong id="chainValue">--</strong></div><div><span class="chain-label">LATEST BLOCK</span><strong id="blockValue">--</strong></div><div><span class="chain-label">CONTRACT</span><strong id="contractValue" class="mono">Not configured</strong></div></div>
+        <div class="section-heading spaced"><div><p class="eyebrow">RECENT ACTIVITY</p><h3>Latest verification attempts</h3></div><button class="text-button" data-go="history">View history →</button></div>
+        <div class="table-wrap"><table><thead><tr><th>Candidate</th><th>Document</th><th>Date</th><th>Result</th><th></th></tr></thead><tbody id="recentBody"><tr><td colspan="5" class="empty-cell">No verification attempts yet.</td></tr></tbody></table></div>
+      </section>
+
+      <section class="page" id="register-page">
+        <div class="page-intro"><p class="eyebrow">CANDIDATE ONBOARDING</p><h2>Create a candidate record</h2><p>Candidate details are stored locally. If Ganache and the configured contract are available, identity metadata is also registered on-chain.</p></div>
+        <form id="registerForm" class="form-panel">
+          <div class="form-heading"><strong>Academic profile</strong><button type="button" class="text-button" id="demoCandidate">Fill demo candidate</button></div>
+          <div class="field-grid">
+            <label>Full name<input name="name" id="regName" required minlength="2" placeholder="Rahul Sharma"></label>
+            <label>Candidate ID<input name="candidate_id" id="regCandidateId" required placeholder="CAND001"></label>
+            <label>Email<input name="email" id="regEmail" type="email" required placeholder="rahul@example.edu"></label>
+            <label>Institution<input name="institution" id="regInstitution" required placeholder="Institute of Technology"></label>
+            <label>Course<input name="course" id="regCourse" required placeholder="B.Tech"></label>
+            <label>Branch<input name="branch" id="regBranch" required placeholder="Computer Engineering"></label>
+            <label>Passing year<input name="passing_year" id="regYear" type="number" min="1950" max="2100" required placeholder="2025"></label>
+            <label>CGPA (out of 10)<input name="cgpa" id="regCgpa" type="number" min="0" max="10" step="0.01" required placeholder="8.2"></label>
+            <label class="span-2">Wallet address<input name="wallet_address" id="regWallet" required minlength="42" maxlength="42" placeholder="Ganache account address (0x…)"><small>Prefilled from the first available Ganache account. No private key is stored.</small></label>
+          </div>
+          <div class="form-footer"><span class="muted">Registration never marks an academic document as verified.</span><button class="button button-green" type="submit" id="registerButton">Register candidate</button></div>
+        </form>
+        <div class="result-strip hidden" id="registrationResult"></div>
+      </section>
+
+      <section class="page" id="documents-page">
+        <div class="page-intro"><p class="eyebrow">DOCUMENT REVIEW</p><h2>Upload, inspect, compare</h2><p>Upload an academic document to extract available text and run transparent, limited checks. A successful upload is not a verification result.</p></div>
+        <div class="workspace-grid">
+          <form id="uploadForm" class="form-panel upload-panel">
+            <div class="form-heading"><strong>Academic document</strong><span class="file-limit">PDF · JPG · PNG · MAX 10 MB</span></div>
+            <label>Candidate<select id="uploadCandidate" required><option value="">Select a candidate</option></select></label>
+            <label>Document type<select id="documentType"><option>Degree certificate</option><option>Transcript / marksheet</option><option>Provisional certificate</option><option>Other academic record</option></select></label>
+            <label class="drop-zone" for="documentFile"><span class="upload-symbol">↑</span><strong id="fileName">Choose a file to upload</strong><small>PDF, JPEG or PNG</small><input id="documentFile" type="file" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png" required></label>
+            <button class="button button-green full-button" type="submit">Upload and extract information</button>
+          </form>
+          <div class="form-panel extracted-panel"><div class="form-heading"><strong>Latest extracted information</strong><span class="muted" id="uploadStatus">Waiting for upload</span></div><dl class="extracted-list" id="extractedFields"><div><dt>Name</dt><dd>Not detected</dd></div><div><dt>Candidate ID</dt><dd>Not detected</dd></div><div><dt>Degree</dt><dd>Not detected</dd></div><div><dt>Branch</dt><dd>Not detected</dd></div><div><dt>Institution</dt><dd>Not detected</dd></div><div><dt>CGPA</dt><dd>Not detected</dd></div><div><dt>Passing year</dt><dd>Not detected</dd></div></dl><p id="processingFindings" class="notice">OCR and QR decoding depend on optional local tools. Missing tools are reported, not treated as a pass.</p></div>
+        </div>
+        <div class="section-heading spaced"><div><p class="eyebrow">CANDIDATE FILES</p><h3>Uploaded documents</h3></div><button class="button button-outline" id="refreshDocuments" type="button">Refresh</button></div>
+        <div class="table-wrap"><table><thead><tr><th>File</th><th>Type</th><th>Uploaded</th><th>Result</th><th></th></tr></thead><tbody id="documentsBody"><tr><td colspan="5" class="empty-cell">Select a candidate to view documents.</td></tr></tbody></table></div>
+        <div class="form-panel rules-panel"><div class="form-heading"><strong>Eligibility rules</strong><span class="muted">Applied during verification</span></div><div class="rule-grid"><label>Minimum CGPA<input id="ruleCgpa" type="number" min="0" max="10" step="0.1" value="7.5"></label><label>Required branch<input id="ruleBranch" value="Computer Engineering"></label><label>Required degree<input id="ruleDegree" value="B.Tech"></label><label>Minimum passing year<input id="ruleYear" type="number" min="1950" max="2100" value="2024"></label></div></div>
+      </section>
+
+      <section class="page" id="history-page">
+        <div class="page-intro"><p class="eyebrow">AUDIT TRAIL</p><h2>Verification history</h2><p>Results are persisted in the local SQLite database and remain available after restarting the API.</p></div>
+        <div class="filter-row"><label>Candidate<select id="historyCandidate"><option value="">All candidates</option></select></label><button class="button button-outline" id="refreshHistory" type="button">Refresh history</button></div>
+        <div class="table-wrap"><table><thead><tr><th>Candidate</th><th>Document</th><th>Date</th><th>Identity</th><th>Authenticity</th><th>QR</th><th>Blockchain</th><th>Eligibility</th><th>Final</th></tr></thead><tbody id="historyBody"><tr><td colspan="9" class="empty-cell">No verification attempts recorded.</td></tr></tbody></table></div>
+        <div id="resultDetail" class="result-detail hidden"></div>
+      </section>
+
+      <section class="page" id="results-page">
+        <div class="page-intro"><p class="eyebrow">ASSESSMENT</p><h2>Verification result</h2><p>Every check is reported independently. Missing OCR, QR, or blockchain signals remain visible and are never counted as successful.</p></div>
+        <div id="verificationResult" class="result-detail"><p class="empty-cell">No verification result selected yet. Upload and verify a candidate document first.</p></div>
+      </section>
+
+      <section class="page" id="recruiter-page">
+        <div class="page-intro"><p class="eyebrow">RECRUITER / ADMIN</p><h2>Candidate registry</h2><p>Search the local roster and filter by the most recent verification and eligibility results.</p></div>
+        <div class="filter-row recruiter-filters"><label>Search<input id="candidateSearch" type="search" placeholder="Name, candidate ID, institution"></label><label>Verification<select id="candidateStatus"><option value="">All statuses</option><option value="PENDING">Pending</option><option value="VERIFIED">Verified</option><option value="FAILED">Failed</option></select></label><label>Eligibility<select id="eligibilityFilter"><option value="">All candidates</option><option value="ELIGIBLE">Eligible</option><option value="NOT_ELIGIBLE">Not eligible</option></select></label><button class="button button-outline" id="searchCandidates" type="button">Apply filters</button></div>
+        <div class="table-wrap"><table><thead><tr><th>Candidate</th><th>Candidate ID</th><th>Institution</th><th>Degree</th><th>CGPA</th><th>Verification</th><th>Eligibility</th><th></th></tr></thead><tbody id="candidateBody"><tr><td colspan="8" class="empty-cell">No candidates registered.</td></tr></tbody></table></div>
+      </section>
+
+      <section class="page" id="details-page">
+        <div class="page-intro"><p class="eyebrow">CANDIDATE PROFILE</p><h2>Candidate details</h2><p>Select a candidate in the recruiter desk to inspect their profile, documents, and latest verification summary.</p></div>
+        <div id="candidateDetails" class="details-panel"><p class="empty-cell">No candidate selected.</p></div>
+      </section>
+      <footer class="page-footer">Academic credential checks are indicators for review, not proof of real-world identity or exhaustive forgery detection.</footer>
+    </main>
+  </div>
+  <script src="/static/script.js" defer></script>
+</body>
+</html>
